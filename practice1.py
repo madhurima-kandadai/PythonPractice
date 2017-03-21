@@ -38,3 +38,11 @@ def add_spam_right_approach(menu = None):
 		menu = []
 	menu.append('spam')
 	return menu
+
+	
+def get_obj_type(obj):
+	return type(obj)
+	
+def add(a,b):
+	return a+b
+	
