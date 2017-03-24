@@ -1,13 +1,25 @@
-import sys
-import os
+""" key press - A module for detenting a single keypress. """
 
-def make_at(path, dir_name):
-	original_path = os.getcwd()
-	try:
-		os.chdir(path)
-		os.mkdir(dir_name)
-	except OSError as e:
-		print(e, file = sys.stderr)
-		raise
-	finally:
-		os.chdir(original_path)
+try:
+	import msvcrt
+	
+	
+	def getkey():
+		"""Wait for a keypress and return a single character string """
+		return msvcrt.getch()
+		
+except ImportError: # error silencing explicitly
+	
+	import sys
+	import tty
+	import termios
+	def getkey():
+		"""Wait for a keypress and return a single character string """
+		fd = sys.stdin.fileno()
+		original_attributes = termios.tcgetattr(fd)
+		try:
+			tty.setraw(sys.stdin.fileno())
+			ch =  sys.stdin.read(1)
+		finally:
+			termios.tcsetattr(fd, termios.TCSADRAIN, original_attributes)
+		return ch
